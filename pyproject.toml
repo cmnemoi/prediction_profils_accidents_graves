@@ -1,6 +1,6 @@
 [project]
 name = "prediction-profils-accidents-graves"
-version = "0.0.0"
+version = "0.1.0"
 description = "Projet de prédiction des profils à risque d'incidents graves dans le cadre du cours de Big Data à CY Tech."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -16,8 +16,10 @@ classifiers = [
 
 dependencies = [
     "pandas>=2.2.3",
+    "pyarrow>=18.1.0",
     "scikit-learn>=1.6.0",
     "seaborn>=0.13.2",
+    "tqdm>=4.67.1",
 ]
 
 [project.urls]
@@ -32,9 +34,7 @@ dev = [
     "python-semantic-release>=9.15.2",
 ]
 lint = [
-    "mypy>=1.14.1",
-    "pytest-mypy>=0.10.3",
-    "ruff>=0.8.5",
+    "ruff>=0.8.6",
 ]
 test = [
     "pytest>=8.3.4",

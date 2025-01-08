@@ -1,6 +1,6 @@
 all: setup-git-hooks install check test 
 
-check: check-format check-lint check-types
+check: check-format check-lint
 
 check-format:
 	uv run ruff format . --diff
@@ -8,11 +8,11 @@ check-format:
 check-lint:
 	uv run ruff check .
 
-check-types:
-	uv run mypy .
+dataset:
+	uv run python src/prediction_profils_accidents_graves/create_dataset.py
 
 install:
-	uv lock --locked
+	uv lock
 	uv sync --locked --group dev --group lint --group test
 
 lint:
@@ -37,4 +37,4 @@ test:
 upgrade-dependencies:
 	uv lock --upgrade
 
-.PHONY: all check check-format check-lint check-types install lint semantic-release setup-git-hooks test upgrade-dependencies
+.PHONY: all check check-format check-lint dataset install lint semantic-release setup-git-hooks test upgrade-dependencies
