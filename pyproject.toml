@@ -15,6 +15,7 @@ classifiers = [
 ]
 
 dependencies = [
+    "notebook>=7.3.2",
     "pandas>=2.2.3",
     "pyarrow>=18.1.0",
     "scikit-learn>=1.6.0",

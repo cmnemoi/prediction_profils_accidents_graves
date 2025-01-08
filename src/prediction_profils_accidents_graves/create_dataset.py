@@ -127,6 +127,7 @@ def _preprocess_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = _normalize_column_names(df)
     df = _standardize_id_columns(df)
+    df = _convert_id_usagers_to_int(df)
     df = _convert_id_columns_to_string(df)
     return df
 
@@ -145,6 +146,18 @@ def _standardize_id_columns(df: pd.DataFrame) -> pd.DataFrame:
     """
     if "accident_id" in df.columns:
         df = df.rename(columns={"accident_id": "num_acc"})
+    return df
+
+
+def _convert_id_usagers_to_int(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Converts ID columns to string type.
+    """
+    id_columns = ["id_usager"]
+    for col in id_columns:
+        if col in df.columns:
+            print(col)
+            df[col] = df[col].str.replace("\xa0", "").astype(str)
     return df
 
 
@@ -293,4 +306,4 @@ def _load_column_mapping() -> dict:
 if __name__ == "__main__":
     df = create_dataset()
     df["nombre_voies"] = df["nombre_voies"].astype(str)  # Prevents error when saving to parquet
-    df.to_parquet("data/processed/accidents.parquet", index=False)
+    df.to_parquet("data/processed/dataset.parquet", index=False)
