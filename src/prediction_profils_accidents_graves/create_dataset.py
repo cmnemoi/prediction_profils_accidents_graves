@@ -1,7 +1,6 @@
-from pathlib import Path
-
 import pandas as pd
 from tqdm import tqdm
+from pathlib import Path
 
 YEARS = [2021, 2022, 2023]
 COLUMN_MAPPING_FILE = Path(__file__).resolve().parents[2] / "docs" / "dictionnaire_des_variables.csv"
