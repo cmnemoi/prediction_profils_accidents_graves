@@ -1,10 +1,9 @@
-from pathlib import Path
-
 import pandas as pd
 from tqdm import tqdm
+from pathlib import Path
 
-YEARS = [2020, 2021, 2022, 2023]
-COLUMN_MAPPING_FILE = "docs/dictionnaire_des_variables.csv"
+YEARS = [2021, 2022, 2023]
+COLUMN_MAPPING_FILE = Path(__file__).resolve().parents[2] / "docs" / "dictionnaire_des_variables.csv"
 
 
 def create_dataset() -> pd.DataFrame:
@@ -92,15 +91,15 @@ def _load_year_data(year: int, file_patterns: dict) -> dict:
     return year_data
 
 
-def _load_table_data(year: int, patterns: list) -> pd.DataFrame | None:
+def _load_table_data(year: int, patterns: list) -> pd.DataFrame: #| None:
     """
     Loads data for a specific table.
     """
     for pattern in patterns:
         filename = _build_filename(year, pattern)
-        if Path(filename).exists():
+        if Path(Path(__file__).resolve().parents[2] / filename).exists():
             try:
-                return _load_and_preprocess_csv(filename)
+                return _load_and_preprocess_csv(Path(__file__).resolve().parents[2] / filename)
             except Exception:
                 continue
     return None
@@ -153,7 +152,7 @@ def _convert_id_usagers_to_int(df: pd.DataFrame) -> pd.DataFrame:
     """
     Converts ID columns to string type.
     """
-    id_columns = ["id_usager"]
+    id_columns = ["id_usager","pr", "id_vehicule", "pr1"]
     for col in id_columns:
         if col in df.columns:
             print(col)
@@ -172,7 +171,7 @@ def _convert_id_columns_to_string(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _merge_year_data(year_data: dict, year: int) -> pd.DataFrame | None:
+def _merge_year_data(year_data: dict, year: int) -> pd.DataFrame: # | None:
     """
     Merges tables for a given year.
     """
@@ -305,5 +304,6 @@ def _load_column_mapping() -> dict:
 
 if __name__ == "__main__":
     df = create_dataset()
+    output_path = Path(__file__).resolve().parents[2] / "data" / "processed" / "dataset.parquet"
     df["nombre_voies"] = df["nombre_voies"].astype(str)  # Prevents error when saving to parquet
-    df.to_parquet("data/processed/dataset.parquet", index=False)
+    df.to_parquet(output_path, index=False)
